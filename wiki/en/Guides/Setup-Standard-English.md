@@ -5,6 +5,8 @@
 
 ## HOST
 
+A better guide can be found on https://stayintarkov.com/docs
+
 1. Download [SPT Aki](https://www.sp-tarkov.com/) and extract Aki.Server and Aki_Data to any desired folder
 2. Follow instructions to [Install SIT Coop Mod](https://github.com/paulov-t/SIT.Aki-Server-Mod) into the Server and configure correctly
 3. Delete all your current copies of Offline EFT
