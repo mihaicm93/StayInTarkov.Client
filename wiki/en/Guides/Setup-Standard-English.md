@@ -1,4 +1,4 @@
-# Installation guide 
+# Installation guide https://stayintarkov.com/docs
 
 * This guide expects users to be able to have access to their ISP Router Port Forwarding and Firewall settings and knows how to change them
 * This guide assumes you already have an official version of Escape from Tarkov installed using BattleState Games' own Launcher
