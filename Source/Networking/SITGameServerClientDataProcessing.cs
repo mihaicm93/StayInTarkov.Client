@@ -23,6 +23,7 @@ namespace StayInTarkov.Networking
         public const string PACKET_TAG_SERVERID = "serverId";
         public const string PACKET_TAG_DATA = "data";
 
+        public static event Action<ushort> OnLatencyUpdated;
 
         public static ManualLogSource Logger { get; }
 
@@ -91,21 +92,19 @@ namespace StayInTarkov.Networking
 
                 //Logger.LogDebug($"Step.1. Packet exists. {packet.ToJson()}");
 
+
+                if (DEBUGPACKETS)
+                {
+                    Logger.LogInfo("GOT :" + packet.SITToJson());
+                }
+
                 // If this is a pong packet, resolve and create a smooth ping
                 if (packet.ContainsKey("pong"))
                 {
                     var pongRaw = long.Parse(packet["pong"].ToString());
                     var dtPong = new DateTime(pongRaw);
-                    var serverPing = (int)(DateTime.UtcNow - dtPong).TotalMilliseconds;
-                    coopGameComponent.UpdatePing(serverPing);
-                    return;
-                }
-
-                if (packet.ContainsKey("HostPing"))
-                {
-                    var dtHP = new DateTime(long.Parse(packet["HostPing"].ToString()));
-                    var timeSpanOfHostToMe = DateTime.UtcNow - dtHP;
-                    //HostPing = (int)Math.Round(timeSpanOfHostToMe.TotalMilliseconds);
+                    var latencyMs = (DateTime.UtcNow - dtPong).TotalMilliseconds / 2;
+                    OnLatencyUpdated((ushort)latencyMs);
                     return;
                 }
 
@@ -272,10 +271,6 @@ namespace StayInTarkov.Networking
 
                         if (coopGC.Players.ContainsKey(playerStatePacket.ProfileId))
                             coopGC.Players[playerStatePacket.ProfileId].ReceivePlayerStatePacket(playerStatePacket);
-
-
-                        var serverPing = (int)(DateTime.UtcNow - new DateTime(long.Parse(packet["t"].ToString()))).TotalMilliseconds;
-                        coopGC.ServerPingSmooth.Enqueue(serverPing);
 
                         break;
                     case "Multiple":
