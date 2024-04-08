@@ -1403,9 +1403,6 @@ namespace StayInTarkov.Coop.SITGameModes
 
             }.ToJson());
 
-            
-
-
             if (BossWaveManager != null)
                 BossWaveManager.Stop();
 
